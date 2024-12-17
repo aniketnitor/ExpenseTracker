@@ -25,8 +25,6 @@ public class ExpenseServiceTest {
     @Mock
     private UserRepository userRepository;
 
-    @Mock
-    private UserService userService;
 
     @InjectMocks
     private ExpenseService expenseService;
@@ -73,14 +71,14 @@ public class ExpenseServiceTest {
         expense.setDate(java.time.LocalDate.now());
         expense.setUser(user);
 
-        when(userService.authenticateUser("user", "123")).thenReturn(Optional.of(user));
+        when(userRepository.findByUsername("user")).thenReturn(Optional.of(user));
+
         when(expenseRepository.save(expense)).thenReturn(expense);
 
         Expense addedExpense = expenseService.addExpense(expense, "user");
 
         assertEquals(expense, addedExpense);
     }
-
 
     @Test
     void testUpdateExpense() {

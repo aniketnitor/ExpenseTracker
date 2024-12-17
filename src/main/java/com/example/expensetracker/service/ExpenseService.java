@@ -3,7 +3,7 @@ package com.example.expensetracker.service;
 import com.example.expensetracker.model.Expense;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.repository.ExpenseRepository;
-import com.example.expensetracker.service.UserService;
+import com.example.expensetracker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +14,7 @@ import java.util.Optional;
 public class ExpenseService {
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
 
     @Autowired
     private ExpenseRepository expenseRepository;
@@ -24,7 +24,7 @@ public class ExpenseService {
     }
 
     public Expense addExpense(Expense expense, String username) {
-        Optional<User> user = userService.authenticateUser(username, expense.getUser().getPassword());
+        Optional<User> user = userRepository.findByUsername(username);
         if (user.isPresent()) {
             expense.setUser(user.get());
             return expenseRepository.save(expense);
