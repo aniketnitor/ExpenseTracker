@@ -6,9 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -18,9 +16,6 @@ public class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
-
-    @Mock
-    private BCryptPasswordEncoder passwordEncoder;
 
     @InjectMocks
     private UserService userService;
@@ -32,7 +27,6 @@ public class UserServiceTest {
         user.setPassword("123");
 
         when(userRepository.findByUsername("user")).thenReturn(java.util.Optional.of(user));
-        Mockito.lenient().when(passwordEncoder.matches("123", user.getPassword())).thenReturn(true);
 
         java.util.Optional<User> authenticatedUser = userService.authenticateUser("user", "123");
 
